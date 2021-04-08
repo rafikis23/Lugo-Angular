@@ -1,0 +1,204 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #563D7C; height: 90px;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <h2 id="logo">Lugo</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <form class="form-inline my-2 my-lg-0 ml-auto">
+                <select class="form-control mr-3" (change)="cambiarUsuario($event)">
+                  <option *ngFor="let usuario of usuarios" [value]="usuario._id">{{usuario.nombre}}  {{usuario.apellido}}</option>
+                </select>
+                <button class="btn btn-secondary my-2 my-sm-0 mr-2" type="button" (click)="verOrdenes()" data-toggle="modal" data-target="#modalUser">Ver Ordenes</button>
+                <button type="button" class="btn btn-secondary my-2 my-sm-0" (click)="crearCategoria()">Agregar Nueva Categoria</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<main role="main" class="container" style="min-height: 100vh;">
+    <div class="row mt-3 text-center mx-auto">
+        <div class="col-lg-6 mx-auto">
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12 col-sm-12">
+            <h2 id="texto-hola">
+
+            </h2>
+            <span id="texto-pregunta">
+                ¿Que Necesitas?
+            </span>
+        </div>
+    </div>
+    <div id="contenedor-categorias" class="row mb-3">
+        <!-- Categoría de ejemplo -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mt-2" *ngFor="let categoria of categorias">
+            <div class="card-item card" style="background: {{categoria.color}}" (click)="infoCategorias(categoria)">
+                <div class="row">
+                    <div class="col mx-auto text-center m-3">
+                        <img src="{{categoria.icono}}" class="category-icon">
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row m-3 mt-4">
+                    <section class="col">
+                        <h3 class="text-white font-weight-bolder">{{categoria.nombreCategoria}}</h3>
+                        <p class="text-white" style="font-size: 13px;">
+                            {{categoria.empresas.length}} Comercios
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+    </div>
+</main>
+<!-- /.container -->
+<br>
+<footer style="height: 90px; background-color: #563D7C;" class="mt-5">
+
+</footer>
+
+<!-- Modal Crear Categoria-->
+<ng-template #modalCreacionCategoria let-modal>
+    <div class="modal-header" style="background-color: #563D7C;">
+        <h4 class="modal-title" id="modal-basic-title"></h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" id="txt-nombre" placeholder="Digite Nombre">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="txt-descripcion" placeholder="Digite Descripcion">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="txt-color" placeholder="Digite Color">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="txt-icono" placeholder="Digite Icono">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="guardar()">Guardar Categoria</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cerrar')">Cerrar</button>
+    </div>
+</ng-template>
+
+<!-- Modal Pedidos -->
+<ng-template #modalPedidos let-modal>
+    <div class="modal-header" style="background-color: #563D7C;">
+        <h4 class="modal-title" id="modal-basic-title"></h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <div id="zona-pedidos" class="modal-body">
+            <h3>Nombre Producto</h3><br>
+            <p>Descripcion</p><br>
+            <div class="row">
+                <div class="col-lg-4">
+                    Cantidad A Solicitar :
+                </div>
+                <div class="col-lg-8">
+                    <input type="text" class="form-control" id="txt-cantidad" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 mr-auto">
+
+                </div>
+                <div class="col-lg-2"><br>
+                    <b>Precio</b>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="agregarPedido()" class="btn btn-secondary">
+            Procesar Orden</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cerrar')">Cerrar</button>
+    </div>
+</ng-template>
+
+<!-- Modal Detalle Categoria -->
+<ng-template #modalCategorias let-modal>
+    <div class="modal-header" style="background-color: #563D7C;">
+        <h4 class="modal-title" id="modal-basic-title">{{categoriaSelecionada}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <div id="zona-categorias" class="modal-body row">
+            <div class="col-lg-6 col-sm-12 mt-2" *ngFor="let empresa of empresas">
+                <div class="card" style="border-radius:12px">
+                    <section>
+                        <img src="../assets/images/banner.jpg" class="img-fluid" style="border-radius: 12px" />
+                        <h3 style="color: #fff; font-weight:bolder;"></h3>
+                    </section>
+                    <section class="p-3" *ngFor="let producto of empresa.productos">
+                        <div class="row p-2">
+                            <div class="col-lg-7">
+                                <h4 style="color:#563D7C;">{{producto.nombreProducto}}</h4>
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="button" class="btn btn-secondary" (click)="realizarOrden()" value="Pedir">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <p>{{producto.descripcion}}</p>
+                            </div>
+                            <div class="col-lg-4 ml-auto">
+                                <b>{{producto.precio}}</b>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cerrar')">Cerrar</button>
+    </div>
+</ng-template>
+
+<!-- Modal Usuario Pedidos-->
+<ng-template #modalUser let-modal>
+    <div class="modal-header" style="background-color: #563D7C;">
+        <h2 class="modal-title font-weight-bolder text-white">Usuario Seleccionado , Estas Son Tus Ordenes.</h2>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <div id="zona-productos" class="card p-3" style="border-radius: 12px;" *ngFor="let orden of ordenes">
+            <p></p>
+            <h3 style="color: #563D7C; font-weight: bold;">{{orden.nombreProducto}} {{orden.nombre}}</h3>
+            <p style="font-size: 18px;">
+                {{orden.descripcion}}
+            </p>
+            <p class="ml-auto">
+                <b style="font-size: 25px">{{orden.precio}}</b>
+            </p>
+            <hr>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cerrar')">Cerrar</button>
+    </div>
+</ng-template>
