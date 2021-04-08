@@ -38,7 +38,12 @@ router.post('/:idUsuario/orden', function(req, res) {
             _id: mongoose.Types.ObjectId(req.params.idUsuario)
         }, {
             $push: {
-                ordenes: { cantidad: req.body.cantidad }
+                ordenes: {
+                    nombreProducto: req.body.nombreProducto,
+                    descripcion: req.body.descripcion,
+                    cantidad: req.body.cantidad,
+                    precio: req.body.precio
+                }
             }
         }).then(result => {
             res.send(result);

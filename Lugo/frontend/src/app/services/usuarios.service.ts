@@ -17,4 +17,13 @@ export class UsuariosService {
     return this.httpClient.get(`http://localhost:8888/usuarios/${idUsuario}/ordenes`, {});
     // console.log('Obtener los pedidos de un usuario');
   }
+  realizarPedidoNuevo(pedido: any): Observable<any> {
+    return this.httpClient.post(`http://localhost:8888/usuarios/${pedido.idUsuario}/orden`,
+    {
+      nombreProducto: pedido.nombreProducto,
+      descripcion: pedido.descripcion,
+      cantidad: pedido.cantidad,
+      precio: pedido.precio
+    });
+  }
 }

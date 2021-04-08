@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <form class="form-inline my-2 my-lg-0 ml-auto">
                 <select class="form-control mr-3" (change)="cambiarUsuario($event)">
-                  <option *ngFor="let usuario of usuarios" [value]="usuario._id">{{usuario.nombre}}  {{usuario.apellido}}</option>
+                  <option *ngFor="let usuario of usuarios"  [value]="usuario._id">{{usuario.nombre}}  {{usuario.apellido}}</option>
                 </select>
                 <button class="btn btn-secondary my-2 my-sm-0 mr-2" type="button" (click)="verOrdenes()" data-toggle="modal" data-target="#modalUser">Ver Ordenes</button>
                 <button type="button" class="btn btn-secondary my-2 my-sm-0" (click)="crearCategoria()">Agregar Nueva Categoria</button>
@@ -103,14 +103,14 @@
     </div>
     <div class="modal-body">
         <div id="zona-pedidos" class="modal-body">
-            <h3>Nombre Producto</h3><br>
-            <p>Descripcion</p><br>
+            <h3>{{this.nombreProducto}}</h3><br>
+            <p>{{this.descripcion}}</p><br>
             <div class="row">
                 <div class="col-lg-4">
                     Cantidad A Solicitar :
                 </div>
                 <div class="col-lg-8">
-                    <input type="text" class="form-control" id="txt-cantidad" />
+                    <input [(ngModel)]="cantidadPedir" type="number" min="1" class="form-control" />
                 </div>
             </div>
             <div class="row">
@@ -118,11 +118,11 @@
 
                 </div>
                 <div class="col-lg-2"><br>
-                    <b>Precio</b>
+                    <b>{{this.precio}}</b>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" (click)="agregarPedido()" class="btn btn-secondary">
+                <button type="button" (click)="agregarPedido(this.cantidadPedir)" class="btn btn-secondary">
             Procesar Orden</button>
             </div>
 
@@ -155,7 +155,7 @@
                                 <h4 style="color:#563D7C;">{{producto.nombreProducto}}</h4>
                             </div>
                             <div class="col-lg-5">
-                                <input type="button" class="btn btn-secondary" (click)="realizarOrden()" value="Pedir">
+                                <input type="button" class="btn btn-secondary" (click)="realizarOrden(producto)" value="Pedir">
                             </div>
                         </div>
                         <div class="row">

@@ -21,7 +21,12 @@ export class AppComponent {
   empresas: any = [];
   ordenes: any = [];
   categoriaSelecionada: any;
+  cantidadPedir: number = 0;
+  nombreProducto: any;
+  descripcion: any;
+  precio: any;
   usuarioSeleccionado: any;
+  nombreUsuarioSeleccionado: any;
   cambiarUsuarioSeleccionado: any;
 
   constructor(
@@ -60,9 +65,10 @@ export class AppComponent {
 
   verOrdenes() {
     // console.log('verOrdenes');
+    console.log('Que valor', this.nombreUsuarioSeleccionado);
     console.log('Valor', this.cambiarUsuarioSeleccionado);
     this.modalService.open(
-      this.modalUser,{size: 'lg'});
+      this.modalUser, {size: 'lg'});
     this.usuarioService.obtenerPedidos(this.cambiarUsuarioSeleccionado).subscribe(
       res => {
           this.ordenes = res.ordenes;
@@ -81,8 +87,11 @@ export class AppComponent {
     console.log('guardar');
   }
 
-  realizarOrden() {
-    console.log('Se agrega el producto a una orden');
+  realizarOrden(producto) {
+    this.nombreProducto = producto.nombreProducto;
+    this.descripcion = producto.descripcion;
+    this.precio = producto.precio;
+    console.log('Se agrega el producto a una orden', producto);
     this.modalService.open(
       this.modalPedidos,
       {
@@ -91,8 +100,28 @@ export class AppComponent {
       }
     );
   }
-  agregarPedido() {
-    console.log('Se agregara pedido');
+  agregarPedido(cantidad) {
+    const pedido = {
+      idUsuario : this.cambiarUsuarioSeleccionado,
+      nombreProducto : this.nombreProducto,
+      descripcion: this.descripcion,
+      cantidad: this.cantidadPedir,
+      precio: this.precio * this.cantidadPedir
+    };
+    console.log('Se agregara pedido', cantidad);
+    console.log(this.cantidadPedir);
+    console.log('El pedido a realizar es:', pedido);
+    this.usuarioService.realizarPedidoNuevo(pedido).subscribe(
+      res => {
+        console.log(res);
+        if ( res.ok === 1) {
+          this.modalService.dismissAll(this.modalPedidos);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   infoCategorias(categoria) {
