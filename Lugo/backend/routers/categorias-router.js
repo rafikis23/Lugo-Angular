@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var categoria = require('../models/categoria');
-
+var mongoose = require('mongoose');
 // Visualizar categorias
 router.get('/', function(req, res) {
     categoria.find({}, { _id: true, nombreCategoria: true, color: true, icono: true, "empresas._id": true })
@@ -31,6 +31,29 @@ router.get('/:idCategoria/empresas', function(req, res) {
     /*
     res.send(`Obtener empresas de la categoria ${req.params.idCategoria}`);
     res.end();*/
+});
+
+// Nueva categoria
+router.post('/categoria', function(req, res) {
+    let c = new categoria({
+        _id: mongoose.Types.ObjectId(),
+        nombreCategoria: req.body.nombreCategoria,
+        descripcion: req.body.descripcion,
+        color: req.body.color,
+        icono: req.body.icono
+    });
+    // Promesa
+    c.save()
+        .then(result => {
+            res.send(result);
+            res.end();
+        })
+        .catch(error => {
+            res.send(error);
+            res.end();
+        })
+        // res.send('Se guardara una nueva pregunta');
+        //res.end();
 });
 
 /*Extra: Nueva categoría*/

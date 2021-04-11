@@ -18,4 +18,14 @@ export class CategoriasService {
       return this.httpClient.get('http://localhost:8888/categorias', {});
     }
     // console.log('Obtener categorias');
+    guardarCategoria(data: any): Observable<any> {
+      return this.httpClient.post(
+        'http://localhost:8888/categorias/categoria',
+          {
+            nombreCategoria: data.nombreCategoria,
+            descripcion: data.descripcion,
+            color: data.color,
+            icono: data.icono
+          });
+    }
 }

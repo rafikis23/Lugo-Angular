@@ -28,6 +28,10 @@ export class AppComponent {
   usuarioSeleccionado: any;
   nombreUsuarioSeleccionado: any;
   cambiarUsuarioSeleccionado: any;
+  categoriaNombre: string = '';
+  categoriaDescripcion: string = '';
+  categoriaColor: string = '';
+  categoriaIcono: string = '';
 
   constructor(
     private modalService: NgbModal,
@@ -84,7 +88,63 @@ export class AppComponent {
     this.modalService.open(this.modalCreacionCategoria, {size: 'lg'});
   }
   guardar() {
-    console.log('guardar');
+  const nuevaCategoria = {
+    nombreCategoria: this.categoriaNombre,
+    descripcion: this.categoriaDescripcion,
+    color: this.categoriaColor,
+    icono: this.categoriaIcono
+  };
+  console.log('Lo que se obtuvo es:', nuevaCategoria);
+  this.categoriaService.guardarCategoria(nuevaCategoria).subscribe(
+    res => {
+      console.log(res);
+      this.modalService.dismissAll(this.modalCreacionCategoria);
+      this.categoriaService.obtenerCategoria().subscribe(
+        res => {
+          this.categorias = res;
+          console.log('Categorias', this.categorias);
+        },
+        error => {
+          console.log(error);
+        });
+    },
+    error => {
+      console.log(error);
+    }
+  );
+  /*
+subscribe(
+      res => {
+        console.log(res);
+        if ( res.ok === 1) {
+          this.modalService.dismissAll(this.modalPedidos);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );;
+  */
+  /*
+    guardarPlaylist(){
+    this.usuariosService.guardarPlaylist(
+      this.usuarioSeleccionado,
+      this.nombrePlaylist
+    ).subscribe(
+      res => {
+        console.log(res);
+        if ( res.ok === 1) {
+          this.modalService.dismissAll();
+          this.onAgregarPlaylist.emit((this.usuarioSeleccionado));
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+   }
+  */
+  console.log('guardar');
   }
 
   realizarOrden(producto) {

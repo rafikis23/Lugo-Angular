@@ -74,16 +74,16 @@
     <div class="modal-body">
         <form>
             <div class="form-group">
-                <input type="text" class="form-control" id="txt-nombre" placeholder="Digite Nombre">
+                <input [(ngModel)]="categoriaNombre" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Digite Nombre">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="txt-descripcion" placeholder="Digite Descripcion">
+                <input [(ngModel)]="categoriaDescripcion" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Digite Descripcion">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="txt-color" placeholder="Digite Color">
+                <input [(ngModel)]="categoriaColor" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Digite Color">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="txt-icono" placeholder="Digite Icono">
+                <input [(ngModel)]="categoriaIcono" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Digite Icono">
             </div>
         </form>
     </div>
